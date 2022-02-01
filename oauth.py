@@ -53,6 +53,12 @@ def authorize_creds(creds, login='login.dat'):
     print('Auth Successful')
     return webmasters_service
 
+
+# Create Function to execute your API Request
+def execute_request(service, property_uri, request):
+    return service.searchanalytics().query(siteUrl=property_uri, body=request).execute()
+
+
 if __name__ == '__main__':
     creds = 'client_secrets.json'
     webmasters_service = authorize_creds(creds)
