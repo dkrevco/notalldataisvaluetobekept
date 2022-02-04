@@ -1,16 +1,21 @@
 import argparse
 import httplib2
 import requests
-
+import pandas as pd
+import re
+import datetime
+import qgrid
 from collections import defaultdict
-# from dateutil import relativedelta
+from dateutil import relativedelta
 from googleapiclient.discovery import build
 from oauth2client import client
 from oauth2client import file
 from oauth2client import tools
 
+from bs4 import BeautifulSoup
 
-def authorize_creds(creds, login='login.dat'):
+
+def authorize_creds(creds, login='auth/login.dat'):
     '''
     Authorize credentials using OAuth2.
     '''
@@ -60,7 +65,8 @@ def execute_request(service, property_uri, request):
 
 
 if __name__ == '__main__':
-    creds = 'client_secrets.json'
+
+    creds = 'auth/client_secrets.json'
     webmasters_service = authorize_creds(creds)
 
     site_list = webmasters_service.sites().list().execute()
