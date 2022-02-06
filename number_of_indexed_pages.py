@@ -1,11 +1,10 @@
-import pandas as pd
-import time
+# import pandas as pd
+# import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-import re
 
 
 def get_index_result(url, headless=True):
@@ -35,14 +34,16 @@ def get_index_result(url, headless=True):
     google_index = google_index.split("Результатов: примерно ")[1].split("(")[0].replace(" ", "")
     print(f'В Google проиндексировано {google_index} страниц')
     data.append(google_index)
+
     # Yandex data
     driver.get(yandex_request)
     yandex_index = driver.find_element(By.CLASS_NAME, "serp-adv__found").text
-    yandex_index = yandex_index.split("Нашлось")[1].split(' результатов')[0]
 
     if yandex_index.find("тыс.") > 0:
-        yandex_index = yandex_index.split(" тыс.")[0]
-        yandex_index = int(yandex_index) * 1000
+        yandex_index = yandex_index.split("Нашлось ")[1].split(" тыс.")[0]
+        yandex_index = str(int(yandex_index) * 1000)
+    else:
+        yandex_index = yandex_index.split("Нашлось ")[1].split(' результатов')[0]
 
     print(f"В Яндексe {yandex_index} результатов")
     data.append(yandex_index)
@@ -51,6 +52,8 @@ def get_index_result(url, headless=True):
 
 
 if __name__ == '__main__':
+
+    indexes = {}
     url = 'iport.ru'
-    print(get_index_result(url))
-    # print(url)
+    index = get_index_result(url)
+    indexes[url] = index
