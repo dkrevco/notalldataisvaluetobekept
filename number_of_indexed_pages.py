@@ -19,7 +19,7 @@ def get_index_result(url, headless=True):
     # Search Engines Block
     google_xpath = '//*[@id="result-stats"]'
     google_request = f'https://www.google.com/search?q=site%3A{url}'
-    yandex_xpath = '//*[@id="search-result-aside"]/div/div[2]'
+    yandex_class = 'serp-adv__found'
     yandex_request = f'https://yandex.ru/search/?text=site%3A{url}&lr=2'
 
     # Selenium Settings
@@ -37,7 +37,7 @@ def get_index_result(url, headless=True):
 
     # Yandex data
     driver.get(yandex_request)
-    yandex_index = driver.find_element(By.CLASS_NAME, "serp-adv__found").text
+    yandex_index = driver.find_element(By.CLASS_NAME, yandex_class).text
 
     if yandex_index.find("тыс.") > 0:
         yandex_index = yandex_index.split("Нашлось ")[1].split(" тыс.")[0]
